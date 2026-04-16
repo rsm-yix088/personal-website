@@ -1,0 +1,15 @@
+---
+title: Projects
+---
+
+# Projects
+
+This page highlights selected academic and personal projects.
+
+## A/B Testing Blog Post
+A course project on simulated A/B testing, classical frequentist statistics, bootstrapping, hypothesis testing, and regression equivalence.
+
+[Read the post](posts/hw1-ab-testing.qmd)
+
+## More Projects Coming Soon
+I will continue adding projects from coursework and independent practice.

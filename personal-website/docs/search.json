@@ -1,0 +1,135 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I am a student in the MSBA program with interests in marketing analytics, statistics, and data-driven decision making.\nI built this website to share my coursework, projects, and writing. Over time, I plan to use it as a portfolio that shows both technical skills and communication skills.\n\n\n\nMarketing analytics\nA/B testing\nData visualization\nStatistical modeling\nBusiness problem solving"
+  },
+  {
+    "objectID": "about.html#interests",
+    "href": "about.html#interests",
+    "title": "About",
+    "section": "",
+    "text": "Marketing analytics\nA/B testing\nData visualization\nStatistical modeling\nBusiness problem solving"
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "This page highlights selected academic and personal projects.\n\n\nA course project on simulated A/B testing, classical frequentist statistics, bootstrapping, hypothesis testing, and regression equivalence.\nRead the post\n\n\n\nI will continue adding projects from coursework and independent practice."
+  },
+  {
+    "objectID": "projects.html#ab-testing-blog-post",
+    "href": "projects.html#ab-testing-blog-post",
+    "title": "Projects",
+    "section": "",
+    "text": "A course project on simulated A/B testing, classical frequentist statistics, bootstrapping, hypothesis testing, and regression equivalence.\nRead the post"
+  },
+  {
+    "objectID": "projects.html#more-projects-coming-soon",
+    "href": "projects.html#more-projects-coming-soon",
+    "title": "Projects",
+    "section": "",
+    "text": "I will continue adding projects from coursework and independent practice."
+  },
+  {
+    "objectID": "resume.html",
+    "href": "resume.html",
+    "title": "Resume",
+    "section": "",
+    "text": "Resume\nMy resume will be posted here.\nYou can either:\n\npaste a short text version of your resume here, or\nlater embed a PDF version"
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html",
+    "href": "posts/hw1-ab-testing.html",
+    "title": "A/B Testing a Call to Action",
+    "section": "",
+    "text": "Suppose I run a website with a landing page that invites visitors to sign up for my newsletter. A small change in wording may affect how many visitors actually subscribe, so I want to compare two possible calls to action. In version A, the button text reads “Sign up for our newsletter here!” In version B, it reads “Stay up to date by signing up!”.\nTo learn which message performs better, I can run an A/B test. In an A/B test, visitors are randomly assigned to one of two versions of a webpage, and I compare outcomes across the two groups. In this case, the outcome of interest is whether a visitor signs up for the newsletter. By comparing sign-up rates between the two CTA groups, I can estimate which version is more effective and use statistical tools to assess how much confidence I should have in that result."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#introduction",
+    "href": "posts/hw1-ab-testing.html#introduction",
+    "title": "A/B Testing a Call to Action",
+    "section": "",
+    "text": "Suppose I run a website with a landing page that invites visitors to sign up for my newsletter. A small change in wording may affect how many visitors actually subscribe, so I want to compare two possible calls to action. In version A, the button text reads “Sign up for our newsletter here!” In version B, it reads “Stay up to date by signing up!”.\nTo learn which message performs better, I can run an A/B test. In an A/B test, visitors are randomly assigned to one of two versions of a webpage, and I compare outcomes across the two groups. In this case, the outcome of interest is whether a visitor signs up for the newsletter. By comparing sign-up rates between the two CTA groups, I can estimate which version is more effective and use statistical tools to assess how much confidence I should have in that result."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#the-ab-test-as-a-statistical-problem",
+    "href": "posts/hw1-ab-testing.html#the-ab-test-as-a-statistical-problem",
+    "title": "A/B Testing a Call to Action",
+    "section": "The A/B Test as a Statistical Problem",
+    "text": "The A/B Test as a Statistical Problem\nWe can frame this A/B test as a simple statistical problem. For each visitor, the outcome is binary: either the person signs up for the newsletter or does not. That means each individual outcome can be modeled as a Bernoulli random variable.\nLet \\(\\pi_A\\) denote the probability that a visitor signs up after seeing CTA A, and let \\(\\pi_B\\) denote the corresponding probability for CTA B. The main quantity of interest is the difference in these two probabilities:\n\\[\n\\theta = \\pi_A - \\pi_B\n\\]\nIf \\(\\theta &gt; 0\\), CTA A performs better on average. If \\(\\theta &lt; 0\\), CTA B performs better.\nA natural estimator for this quantity is the difference in sample means:\n\\[\n\\hat{\\theta} = \\bar{X}_A - \\bar{X}_B\n\\]\nBecause each observation is coded as either 1 (signed up) or 0 (did not sign up), the sample mean in each group is just the observed sign-up rate. So \\(\\bar{X}_A = \\hat{\\pi}_A\\) and \\(\\bar{X}_B = \\hat{\\pi}_B\\). In other words, estimating the treatment effect in this experiment is simply a matter of comparing the observed proportions across the two groups."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#simulating-data",
+    "href": "posts/hw1-ab-testing.html#simulating-data",
+    "title": "A/B Testing a Call to Action",
+    "section": "Simulating Data",
+    "text": "Simulating Data\nIn practice, we would not know the true values of \\(\\pi_A\\) and \\(\\pi_B\\). In a real A/B test, those probabilities must be inferred from observed user behavior. For the purpose of this exercise, however, it is useful to set the true values ourselves so that we can study how our estimator behaves when we know the truth. I assume that \\(\\pi_A = 0.22\\) and \\(\\pi_B = 0.18\\), so the true treatment effect is \\(\\theta = 0.04\\).\nUsing these parameters, I simulated 1,000 Bernoulli draws for each group. In this particular simulated sample, the observed sign-up rate was 0.202 for CTA A and 0.176 for CTA B, which gives an estimated treatment effect of \\(\\hat{\\theta} = 0.026\\). This estimate is smaller than the true value of 0.04, but that is exactly what we should expect in finite samples: random sampling variation causes the estimator to move around the truth from one sample to the next.\n\nimport numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom scipy.stats import norm\nimport statsmodels.api as sm\n\nnp.random.seed(495)\n\npi_A = 0.22\npi_B = 0.18\nn_A = 1000\nn_B = 1000\ntheta_true = pi_A - pi_B\n\nA = np.random.binomial(1, pi_A, n_A)\nB = np.random.binomial(1, pi_B, n_B)\n\nmean_A = A.mean()\nmean_B = B.mean()\ntheta_hat = mean_A - mean_B\n\nprint(\"True theta:\", theta_true)\nprint(\"Sample mean A:\", mean_A)\nprint(\"Sample mean B:\", mean_B)\nprint(\"Theta hat:\", theta_hat)\n\nTrue theta: 0.04000000000000001\nSample mean A: 0.202\nSample mean B: 0.176\nTheta hat: 0.026000000000000023"
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#the-law-of-large-numbers",
+    "href": "posts/hw1-ab-testing.html#the-law-of-large-numbers",
+    "title": "A/B Testing a Call to Action",
+    "section": "The Law of Large Numbers",
+    "text": "The Law of Large Numbers\nThe Law of Large Numbers tells us that as the sample size grows, the sample mean converges to the population mean. In the context of this A/B test, that idea gives us confidence that our estimator, \\(\\hat{\\theta} = \\bar{X}_A - \\bar{X}_B\\), should get closer to the true treatment effect \\(\\theta\\) as we observe more and more data.\nTo illustrate this, I computed the element-wise differences between the CTA A and CTA B draws and then calculated the cumulative average of those differences. The resulting plot shows how the running estimate evolves as the sample grows from 1 observation to 1,000 observations.\n\ndiffs = A - B\nrunning_mean = np.cumsum(diffs) / np.arange(1, len(diffs) + 1)\n\nplt.figure(figsize=(8, 5))\nplt.plot(np.arange(1, len(diffs) + 1), running_mean)\nplt.axhline(theta_true, linestyle=\"--\")\nplt.xlabel(\"Number of observations\")\nplt.ylabel(\"Cumulative average of A - B\")\nplt.title(\"Law of Large Numbers for the Difference in Means\")\nplt.show()\n\nprint(\"Final cumulative average:\", running_mean[-1])\n\n\n\n\n\n\n\n\nFinal cumulative average: 0.026\n\n\nAt the beginning of the sample, the running average is very noisy because each new observation has a large effect on the estimate. As more observations accumulate, the curve becomes much more stable. In this simulation, the cumulative average ends at 0.026. The main lesson is not that every sample of size 1,000 will land exactly on the truth, but rather that larger samples reduce instability and make the estimator more reliable. This is the intuition behind why large-sample statistics work at all."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#bootstrap-standard-errors",
+    "href": "posts/hw1-ab-testing.html#bootstrap-standard-errors",
+    "title": "A/B Testing a Call to Action",
+    "section": "Bootstrap Standard Errors",
+    "text": "Bootstrap Standard Errors\nOnce we have an estimate of the treatment effect, the next question is how precise that estimate is. A point estimate alone is incomplete because it does not tell us how much uncertainty surrounds it. To communicate uncertainty, we need a standard error and, ideally, a confidence interval.\nThe bootstrap is a resampling method that estimates the variability of a statistic without requiring a complicated closed-form derivation. The idea is simple: repeatedly resample from the observed data with replacement, recompute the statistic each time, and then use the standard deviation of those resampled statistics as an estimate of the standard error.\nHere, I generated 1,000 bootstrap resamples from each group and computed the treatment effect for each resample.\n\nnp.random.seed(495)\n\nB_boot = 1000\nboot_thetas = []\n\nfor _ in range(B_boot):\n    A_star = np.random.choice(A, size=len(A), replace=True)\n    B_star = np.random.choice(B, size=len(B), replace=True)\n    theta_star = A_star.mean() - B_star.mean()\n    boot_thetas.append(theta_star)\n\nboot_thetas = np.array(boot_thetas)\nbootstrap_se = boot_thetas.std(ddof=1)\n\nanalytical_se = np.sqrt(\n    mean_A * (1 - mean_A) / len(A) +\n    mean_B * (1 - mean_B) / len(B)\n)\n\nci_lower = theta_hat - 1.96 * bootstrap_se\nci_upper = theta_hat + 1.96 * bootstrap_se\n\nprint(\"Bootstrap SE:\", bootstrap_se)\nprint(\"Analytical SE:\", analytical_se)\nprint(\"95% CI lower:\", ci_lower)\nprint(\"95% CI upper:\", ci_upper)\n\nBootstrap SE: 0.017538860014567954\nAnalytical SE: 0.017499142836150578\n95% CI lower: -0.008376165628553166\n95% CI upper: 0.06037616562855321\n\n\nThe bootstrapped standard error is 0.01754, while the analytical standard error is 0.01750. These two values are extremely close, which is reassuring: the resampling-based estimate and the formula-based estimate tell essentially the same story.\nUsing the bootstrapped standard error, the 95% confidence interval for \\(\\theta\\) is approximately:\n\\[\n[-0.00838,\\ 0.06038]\n\\]\nThis interval includes zero, which means the data are consistent both with a small positive effect and with no effect at all. Substantively, the estimate favors CTA A, but the uncertainty is still large enough that we cannot make a strong claim that A truly outperforms B in this simulated sample."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#the-central-limit-theorem",
+    "href": "posts/hw1-ab-testing.html#the-central-limit-theorem",
+    "title": "A/B Testing a Call to Action",
+    "section": "The Central Limit Theorem",
+    "text": "The Central Limit Theorem\nThe Central Limit Theorem states that, regardless of the shape of the underlying population distribution, the sampling distribution of the sample mean becomes approximately Normal as the sample size grows. Since our estimator \\(\\hat{\\theta}\\) is a difference in sample means, the same logic applies here as well.\nTo visualize this, I repeatedly simulated \\(\\hat{\\theta}\\) 1,000 times for each of four sample sizes: \\(n = 25, 50, 100,\\) and \\(500\\). For each sample size, I drew \\(n\\) observations from each Bernoulli group, computed the difference in means, and then plotted the resulting sampling distribution.\n\nsample_sizes = [25, 50, 100, 500]\ntheta_sims = {}\n\nnp.random.seed(495)\n\nfor n in sample_sizes:\n    estimates = []\n    for _ in range(1000):\n        A_sim = np.random.binomial(1, pi_A, n)\n        B_sim = np.random.binomial(1, pi_B, n)\n        estimates.append(A_sim.mean() - B_sim.mean())\n    theta_sims[n] = np.array(estimates)\n\n\nfig, axes = plt.subplots(2, 2, figsize=(10, 8), sharex=True, sharey=True)\n\nfor ax, n in zip(axes.flatten(), sample_sizes):\n    ax.hist(theta_sims[n], bins=30)\n    ax.axvline(theta_true, linestyle=\"--\")\n    ax.set_title(f\"n = {n}\")\n    ax.set_xlabel(\"Estimated difference\")\n    ax.set_ylabel(\"Frequency\")\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n\n\n\n\nThe four histograms show the CLT in action. When \\(n = 25\\), the distribution is still somewhat rough and irregular. By \\(n = 50\\), it is already becoming more centered and more bell-shaped. At \\(n = 100\\), the shape looks smoother and more symmetric, and by \\(n = 500\\), the distribution is clearly tightly concentrated and approximately Normal. This is exactly why the Normal approximation becomes so useful in large-sample inference."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#hypothesis-testing",
+    "href": "posts/hw1-ab-testing.html#hypothesis-testing",
+    "title": "A/B Testing a Call to Action",
+    "section": "Hypothesis Testing",
+    "text": "Hypothesis Testing\nNow that we have seen why \\(\\hat{\\theta}\\) is approximately Normal in large samples, we can use that result to conduct a hypothesis test. The null hypothesis is:\n\\[\nH_0: \\theta = 0\n\\]\nwhich says that the two CTAs have the same sign-up rate. The alternative is:\n\\[\nH_1: \\theta \\neq 0\n\\]\nwhich says that the two CTAs differ.\nTo test this, we standardize the estimated treatment effect:\n\\[\nz = \\frac{\\hat{\\theta} - 0}{SE(\\hat{\\theta})}\n\\]\nThe logic is straightforward. First, the CLT tells us that \\(\\hat{\\theta}\\) is approximately Normal for large samples. Under the null, that distribution is centered at 0. Second, dividing by the standard error converts the statistic to something approximately distributed as a standard Normal random variable. Once we know the null distribution of the test statistic, we can compute a p-value.\nThis test is often casually called a “t-test,” but in this setting it is more accurate to think of it as a large-sample z-test. The classical t-test relies on exact Normal-theory results with estimated variance. Here the underlying data are Bernoulli, not Normal, so the exact t-distribution result does not apply. Instead, the CLT gives us an approximate Normal reference distribution, which is enough for large samples.\n\nz_stat = theta_hat / analytical_se\np_value = 2 * (1 - norm.cdf(abs(z_stat)))\n\nprint(\"z-statistic:\", z_stat)\nprint(\"p-value:\", p_value)\n\nz-statistic: 1.4857870607403674\np-value: 0.13733545373416378\n\n\nFor this sample, the test statistic is \\(z = 1.4858\\), and the corresponding two-sided p-value is 0.1373. Since this p-value is larger than 0.05, I fail to reject the null hypothesis at the 5% significance level. In other words, although the estimated difference is positive, the evidence is not strong enough to conclude that the two CTAs produce different sign-up rates in this simulated sample."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#the-t-test-as-a-regression",
+    "href": "posts/hw1-ab-testing.html#the-t-test-as-a-regression",
+    "title": "A/B Testing a Call to Action",
+    "section": "The T-Test as a Regression",
+    "text": "The T-Test as a Regression\nThe two-sample test above can also be written as a simple linear regression. This is useful because it shows that the same regression framework used throughout applied statistics also reproduces familiar experimental comparisons.\nTo do this, I stacked the A and B observations into one dataset. The outcome variable \\(Y_i\\) equals 1 if the visitor signed up and 0 otherwise. I then created an indicator variable \\(D_i\\), which equals 1 for visitors assigned to CTA A and 0 for visitors assigned to CTA B. The regression model is:\n\\[\nY_i = \\beta_0 + \\beta_1 D_i + \\varepsilon_i\n\\]\nIn this setup, \\(\\beta_0\\) is the mean outcome for group B, and \\(\\beta_0 + \\beta_1\\) is the mean outcome for group A. That means \\(\\beta_1 = \\pi_A - \\pi_B = \\theta\\). So the regression coefficient on the treatment indicator should match the difference in means estimator exactly.\n\ndf = pd.DataFrame({\n    \"Y\": np.concatenate([A, B]),\n    \"D\": np.concatenate([np.ones(len(A)), np.zeros(len(B))])\n})\n\nX = sm.add_constant(df[\"D\"])\nmodel = sm.OLS(df[\"Y\"], X).fit()\n\nbeta1_hat = model.params[\"D\"]\nreg_se = model.bse[\"D\"]\nt_stat = model.tvalues[\"D\"]\nreg_p_value = model.pvalues[\"D\"]\n\nprint(\"beta1_hat:\", beta1_hat)\nprint(\"regression SE:\", reg_se)\nprint(\"t-statistic:\", t_stat)\nprint(\"regression p-value:\", reg_p_value)\n\nbeta1_hat: 0.02600000000000006\nregression SE: 0.01750789897522051\nt-statistic: 1.485043981393695\nregression p-value: 0.13768992344072536\n\n\nThe regression coefficient estimate is \\(\\hat{\\beta}_1 = 0.0260\\), which is numerically identical to the earlier estimate \\(\\hat{\\theta} = 0.026\\). The regression standard error is 0.01751, the t-statistic is 1.4850, and the p-value is 0.1377. These are essentially the same as the values from the earlier two-sample test. The tiny differences come from small implementation details in how standard errors are calculated, but the substantive conclusion is unchanged.\nThis equivalence matters because regression is far more flexible. In a simple two-group experiment, it reproduces the standard difference-in-means test. But once we move beyond the simplest case, regression makes it easy to add covariates, interactions, or multiple treatment groups while preserving the same inferential logic."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#the-problem-with-peeking",
+    "href": "posts/hw1-ab-testing.html#the-problem-with-peeking",
+    "title": "A/B Testing a Call to Action",
+    "section": "The Problem with Peeking",
+    "text": "The Problem with Peeking\nSuppose my boss is impatient and does not want to wait until all 1,000 visitors per group have been observed. Instead, she wants to check the p-value after every 100 visitors per group and stop the experiment early if any interim result is statistically significant at the 5% level. This sounds reasonable from a business perspective, but it creates a serious problem under classical frequentist statistics.\nThe issue is that a single hypothesis test at \\(\\alpha = 0.05\\) has a 5% false positive rate under the null. But if we repeatedly test the same experiment while the data accumulate, we create multiple opportunities to generate a false positive. Even if there is truly no treatment effect, the chance of observing at least one “significant” result across many peeks can be much higher than 5%.\nTo show this, I simulated a world in which the null hypothesis is actually true: \\(\\pi_A = \\pi_B = 0.20\\). For each simulated experiment, I generated 1,000 observations for each group, checked the p-value after every 100 observations, and recorded whether any of the ten peeks produced a significant result. I then repeated this process 10,000 times.\n\nnp.random.seed(495)\n\npi_A_null = 0.20\npi_B_null = 0.20\nn_total = 1000\npeek_points = np.arange(100, 1001, 100)\nn_experiments = 10000\n\nfalse_positive_count = 0\n\nfor _ in range(n_experiments):\n    A_null = np.random.binomial(1, pi_A_null, n_total)\n    B_null = np.random.binomial(1, pi_B_null, n_total)\n\n    any_significant = False\n\n    for n in peek_points:\n        A_peek = A_null[:n]\n        B_peek = B_null[:n]\n\n        mean_A_peek = A_peek.mean()\n        mean_B_peek = B_peek.mean()\n        theta_hat_peek = mean_A_peek - mean_B_peek\n\n        se_peek = np.sqrt(\n            mean_A_peek * (1 - mean_A_peek) / n +\n            mean_B_peek * (1 - mean_B_peek) / n\n        )\n\n        if se_peek == 0:\n            continue\n\n        z_peek = theta_hat_peek / se_peek\n        p_peek = 2 * (1 - norm.cdf(abs(z_peek)))\n\n        if p_peek &lt; 0.05:\n            any_significant = True\n            break\n\n    if any_significant:\n        false_positive_count += 1\n\nfalse_positive_rate_peeking = false_positive_count / n_experiments\n\nprint(\"Empirical false positive rate under peeking:\", false_positive_rate_peeking)\n\nEmpirical false positive rate under peeking: 0.1976\n\n\nThe empirical false positive rate under this peeking strategy is 0.1976, or about 19.76%. That is far above the nominal 5% false positive rate of a single test. In practical terms, repeated peeking makes it much easier to incorrectly declare a winner when no real difference exists. This is why frequentist A/B testing requires either a fixed stopping rule or a correction for repeated looks at the data."
+  },
+  {
+    "objectID": "posts/hw1-ab-testing.html#conclusion",
+    "href": "posts/hw1-ab-testing.html#conclusion",
+    "title": "A/B Testing a Call to Action",
+    "section": "Conclusion",
+    "text": "Conclusion\nThis simulation study ties together several central ideas from classical frequentist statistics. The Law of Large Numbers explains why the estimator becomes more stable in large samples. The bootstrap gives a practical way to quantify uncertainty. The Central Limit Theorem justifies the Normal approximation that underlies confidence intervals and hypothesis tests. The regression framework shows that difference-in-means testing is part of a broader modeling toolkit. Finally, the peeking exercise highlights how fragile classical inference can become when its assumptions about the testing procedure are violated.\nIn this simulated A/B test, CTA A performed better in the sample, with an estimated treatment effect of 0.026. However, the confidence interval included zero and the p-value was not small enough to reject the null hypothesis. So while the point estimate leans in favor of CTA A, the evidence is not strong enough to conclude that the difference is statistically significant in this particular experiment."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Home",
+    "section": "",
+    "text": "MSBA student interested in marketing analytics, experimentation, and data analysis.\nWelcome to my personal website. This site includes my background, selected projects, course blog posts, and resume.\n\n\n\nAbout\nProjects\nResume\nBlog"
+  },
+  {
+    "objectID": "index.html#quick-links",
+    "href": "index.html#quick-links",
+    "title": "Home",
+    "section": "",
+    "text": "About\nProjects\nResume\nBlog"
+  }
+]

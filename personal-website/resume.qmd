@@ -1,0 +1,12 @@
+---
+title: Resume
+---
+
+# Resume
+
+My resume will be posted here.
+
+You can either:
+
+- paste a short text version of your resume here, or
+- later embed a PDF version

@@ -1,0 +1,17 @@
+---
+title: About
+---
+
+# About Me
+
+I am a student in the MSBA program with interests in marketing analytics, statistics, and data-driven decision making.
+
+I built this website to share my coursework, projects, and writing. Over time, I plan to use it as a portfolio that shows both technical skills and communication skills.
+
+## Interests
+
+- Marketing analytics
+- A/B testing
+- Data visualization
+- Statistical modeling
+- Business problem solving

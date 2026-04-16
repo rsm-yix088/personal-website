@@ -1,0 +1,16 @@
+---
+title: Home
+---
+
+# Yirui Xu
+
+MSBA student interested in marketing analytics, experimentation, and data analysis.
+
+Welcome to my personal website. This site includes my background, selected projects, course blog posts, and resume.
+
+## Quick Links
+
+- [About](about.qmd)
+- [Projects](projects.qmd)
+- [Resume](resume.qmd)
+- [Blog](posts/hw1-ab-testing.qmd)
