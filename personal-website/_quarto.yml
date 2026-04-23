@@ -14,7 +14,7 @@ website:
         text: Projects
       - href: resume.qmd
         text: Resume
-      - href: posts/hw1-ab-testing.qmd
+      - href: blog.qmd
         text: Blog
 
 format:
