@@ -1,0 +1,71 @@
+---
+title: "HW2: Replicating Karlan & List (2007)"
+author: Yirui Xu
+date: 2026-04-22
+categories: [economics, causal inference]
+---
+
+## Introduction
+
+This paper studies whether matching donations increase charitable giving. Karlan and List (2007) conduct a large-scale field experiment in which donors are randomly assigned to either receive a matching offer (treatment group) or not (control group). The goal is to examine whether such incentives affect donation behavior.
+
+## Replication
+
+I replicate key findings from Table 2A of the paper using the provided dataset.
+
+### Response Rate
+
+```{python}
+import pandas as pd
+df = pd.read_stata('/home/jovyan/git/rsm-gh-assignment-practice/495/week2/week3/AERtables1-5.dta')
+df.groupby("treatment")["gave"].mean()
+```
+
+The results show that the treatment group has a higher probability of donating compared to the control group.
+
+### Average Donation
+
+```{python}
+df.groupby("treatment")["amount"].mean()
+```
+
+The average donation amount is higher in the treatment group.
+
+### Conditional Donation
+
+```{python}
+df[df["gave"] == 1].groupby("treatment")["amount"].mean()
+```
+
+Conditional on giving, the donation amounts are similar across groups.
+
+### Regression Analysis
+
+```{python}
+import statsmodels.formula.api as smf
+
+model = smf.ols("gave ~ treatment", data=df).fit()
+print(model.summary())
+```
+
+The regression results show that the treatment effect is positive and statistically significant, indicating that receiving a matching offer increases the likelihood of donating.
+
+## Extra Analysis
+
+### Visualization
+
+```{python}
+import matplotlib.pyplot as plt
+
+df.groupby("treatment")["amount"].mean().plot(kind="bar")
+plt.title("Average Donation by Treatment")
+plt.xlabel("Treatment (0 = Control, 1 = Treatment)")
+plt.ylabel("Average Donation")
+plt.show()
+```
+
+The figure shows that individuals in the treatment group donate more on average than those in the control group.
+
+## Conclusion
+
+The results confirm the main findings of Karlan and List (2007). Matching donations increase both the probability of giving and the overall amount raised. However, conditional on giving, the donation size does not increase significantly.

@@ -131,5 +131,40 @@
     "title": "Home",
     "section": "",
     "text": "About\nProjects\nResume\nBlog"
+  },
+  {
+    "objectID": "posts/hw2-replication.html",
+    "href": "posts/hw2-replication.html",
+    "title": "HW2: Replicating Karlan & List (2007)",
+    "section": "",
+    "text": "This paper studies whether matching donations increase charitable giving. Karlan and List (2007) conduct a large-scale field experiment in which donors are randomly assigned to either receive a matching offer (treatment group) or not (control group). The goal is to examine whether such incentives affect donation behavior."
+  },
+  {
+    "objectID": "posts/hw2-replication.html#introduction",
+    "href": "posts/hw2-replication.html#introduction",
+    "title": "HW2: Replicating Karlan & List (2007)",
+    "section": "",
+    "text": "This paper studies whether matching donations increase charitable giving. Karlan and List (2007) conduct a large-scale field experiment in which donors are randomly assigned to either receive a matching offer (treatment group) or not (control group). The goal is to examine whether such incentives affect donation behavior."
+  },
+  {
+    "objectID": "posts/hw2-replication.html#replication",
+    "href": "posts/hw2-replication.html#replication",
+    "title": "HW2: Replicating Karlan & List (2007)",
+    "section": "Replication",
+    "text": "Replication\nI replicate key findings from Table 2A of the paper using the provided dataset.\n\nResponse Rate\n\nimport pandas as pd\ndf = pd.read_stata('/home/jovyan/git/rsm-gh-assignment-practice/495/week2/week3/AERtables1-5.dta')\ndf.groupby(\"treatment\")[\"gave\"].mean()\n\ntreatment\n0.0    0.017858\n1.0    0.022039\nName: gave, dtype: float32\n\n\nThe results show that the treatment group has a higher probability of donating compared to the control group.\n\n\nAverage Donation\n\ndf.groupby(\"treatment\")[\"amount\"].mean()\n\ntreatment\n0.0    0.813268\n1.0    0.966873\nName: amount, dtype: float32\n\n\nThe average donation amount is higher in the treatment group.\n\n\nConditional Donation\n\ndf[df[\"gave\"] == 1].groupby(\"treatment\")[\"amount\"].mean()\n\ntreatment\n0.0    45.540268\n1.0    43.871876\nName: amount, dtype: float32\n\n\nConditional on giving, the donation amounts are similar across groups.\n\n\nRegression Analysis\n\nimport statsmodels.formula.api as smf\n\nmodel = smf.ols(\"gave ~ treatment\", data=df).fit()\nprint(model.summary())\n\n                            OLS Regression Results                            \n==============================================================================\nDep. Variable:                   gave   R-squared:                       0.000\nModel:                            OLS   Adj. R-squared:                  0.000\nMethod:                 Least Squares   F-statistic:                     9.618\nDate:                Wed, 22 Apr 2026   Prob (F-statistic):            0.00193\nTime:                        21:09:50   Log-Likelihood:                 26630.\nNo. Observations:               50083   AIC:                        -5.326e+04\nDf Residuals:                   50081   BIC:                        -5.324e+04\nDf Model:                           1                                         \nCovariance Type:            nonrobust                                         \n==============================================================================\n                 coef    std err          t      P&gt;|t|      [0.025      0.975]\n------------------------------------------------------------------------------\nIntercept      0.0179      0.001     16.225      0.000       0.016       0.020\ntreatment      0.0042      0.001      3.101      0.002       0.002       0.007\n==============================================================================\nOmnibus:                    59814.280   Durbin-Watson:                   1.997\nProb(Omnibus):                  0.000   Jarque-Bera (JB):          4317152.727\nSkew:                           6.740   Prob(JB):                         0.00\nKurtosis:                      46.440   Cond. No.                         3.23\n==============================================================================\n\nNotes:\n[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.\n\n\nThe regression results show that the treatment effect is positive and statistically significant, indicating that receiving a matching offer increases the likelihood of donating."
+  },
+  {
+    "objectID": "posts/hw2-replication.html#extra-analysis",
+    "href": "posts/hw2-replication.html#extra-analysis",
+    "title": "HW2: Replicating Karlan & List (2007)",
+    "section": "Extra Analysis",
+    "text": "Extra Analysis\n\nVisualization\n\nimport matplotlib.pyplot as plt\n\ndf.groupby(\"treatment\")[\"amount\"].mean().plot(kind=\"bar\")\nplt.title(\"Average Donation by Treatment\")\nplt.xlabel(\"Treatment (0 = Control, 1 = Treatment)\")\nplt.ylabel(\"Average Donation\")\nplt.show()\n\n\n\n\n\n\n\n\nThe figure shows that individuals in the treatment group donate more on average than those in the control group."
+  },
+  {
+    "objectID": "posts/hw2-replication.html#conclusion",
+    "href": "posts/hw2-replication.html#conclusion",
+    "title": "HW2: Replicating Karlan & List (2007)",
+    "section": "Conclusion",
+    "text": "Conclusion\nThe results confirm the main findings of Karlan and List (2007). Matching donations increase both the probability of giving and the overall amount raised. However, conditional on giving, the donation size does not increase significantly."
   }
 ]
