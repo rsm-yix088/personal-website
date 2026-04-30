@@ -310,3 +310,5 @@ The empirical false positive rate under this peeking strategy is 0.1976, or abou
 This simulation study ties together several central ideas from classical frequentist statistics. The Law of Large Numbers explains why the estimator becomes more stable in large samples. The bootstrap gives a practical way to quantify uncertainty. The Central Limit Theorem justifies the Normal approximation that underlies confidence intervals and hypothesis tests. The regression framework shows that difference-in-means testing is part of a broader modeling toolkit. Finally, the peeking exercise highlights how fragile classical inference can become when its assumptions about the testing procedure are violated.
 
 In this simulated A/B test, CTA A performed better in the sample, with an estimated treatment effect of 0.026. However, the confidence interval included zero and the p-value was not small enough to reject the null hypothesis. So while the point estimate leans in favor of CTA A, the evidence is not strong enough to conclude that the difference is statistically significant in this particular experiment.
+
+Overall, that's why we need to doing the ab-testing.
