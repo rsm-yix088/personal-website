@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/hw3_questions.html",
       "/posts/hw2-replication.html",
       "/posts/hw1-ab-testing.html"
     ]
