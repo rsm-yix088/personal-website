@@ -251,7 +251,7 @@ window.Quarto = {
 <section id="exploring-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="exploring-the-data">Exploring the Data</h2>
 <p>I begin by reading in the dataset and checking its basic structure.</p>
-<div id="6b7f5d5f" class="cell" data-execution_count="1">
+<div id="a2beec97" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -337,7 +337,7 @@ dtype: int64</code></pre>
 </div>
 <p>The dataset contains 1,500 observations and four variables: <code>patents</code>, <code>region</code>, <code>age</code>, and <code>iscustomer</code>. There are no missing values, so I can move directly to the exploratory analysis.</p>
 <p>The first comparison is the distribution of patent counts for customers and non-customers.</p>
-<div id="f015e0dc" class="cell" data-execution_count="2">
+<div id="1a881eb7" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>customer_df <span class="op">=</span> df[df[<span class="st">"iscustomer"</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>noncustomer_df <span class="op">=</span> df[df[<span class="st">"iscustomer"</span>] <span class="op">==</span> <span class="dv">0</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -381,7 +381,7 @@ Mean patents for customers: 4.133056133056133</code></pre>
 </div>
 <p>At the raw level, customer firms appear to perform better. The average number of patents is about 3.47 for non-customers and about 4.13 for customers. The histograms show the same pattern visually: the customer distribution is somewhat shifted to the right. If I stopped here, I might conclude that Blueprinty’s software is associated with better patent outcomes. But that conclusion would be premature, because the two groups may differ systematically in ways that also affect patent counts.</p>
 <p>To investigate that issue, I next compare the regional composition of customers and non-customers.</p>
-<div id="43da8693" class="cell" data-execution_count="3">
+<div id="cea17489" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>region_counts <span class="op">=</span> pd.crosstab(df[<span class="st">"region"</span>], df[<span class="st">"iscustomer"</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>region_props <span class="op">=</span> pd.crosstab(df[<span class="st">"region"</span>], df[<span class="st">"iscustomer"</span>], normalize<span class="op">=</span><span class="st">"columns"</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -511,7 +511,7 @@ Mean patents for customers: 4.133056133056133</code></pre>
 </div>
 <p>The regional distributions differ substantially. Customer firms are heavily concentrated in the Northeast, while non-customers are spread much more evenly across the five regions. This matters because regional differences in industry composition, innovation ecosystems, or access to legal and technical resources could affect patent outcomes independently of Blueprinty’s software. If customer firms are concentrated in a region where patenting is already more common, then part of their apparent advantage could simply reflect geography.</p>
 <p>I also compare the age distribution of customer and non-customer firms.</p>
-<div id="802f7f5d" class="cell" data-execution_count="4">
+<div id="9725ee76" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mean_age_noncustomer <span class="op">=</span> noncustomer_df[<span class="st">"age"</span>].mean()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mean_age_customer <span class="op">=</span> customer_df[<span class="st">"age"</span>].mean()</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -580,7 +580,7 @@ L(\lambda \mid Y)
 \]</span></p>
 <p>The last term does not depend on <span class="math inline">\(begin:math:text\)</span>\lambda<span class="math inline">\(end:math:text\)</span>, so maximizing the log-likelihood means finding the value of <span class="math inline">\(begin:math:text\)</span>\lambda<span class="math inline">\(end:math:text\)</span> that best fits the observed count data.</p>
 <p>I code the Poisson log-likelihood below.</p>
-<div id="5b9afe18" class="cell" data-execution_count="5">
+<div id="97278652" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> df[<span class="st">"patents"</span>].values</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> poisson_loglikelihood(lam, Y):</span>
@@ -589,7 +589,7 @@ L(\lambda \mid Y)
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.<span class="bu">sum</span>(Y <span class="op">*</span> np.log(lam) <span class="op">-</span> lam <span class="op">-</span> gammaln(Y <span class="op">+</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Next I evaluate the log-likelihood over a grid of possible <span class="math inline">\(begin:math:text\)</span>\lambda<span class="math inline">\(end:math:text\)</span> values.</p>
-<div id="0e73b8dd" class="cell" data-execution_count="6">
+<div id="f84850f6" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>lam_grid <span class="op">=</span> np.linspace(<span class="fl">0.1</span>, Y.mean() <span class="op">*</span> <span class="dv">3</span>, <span class="dv">300</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>loglik_values <span class="op">=</span> [poisson_loglikelihood(lam, Y) <span class="cf">for</span> lam <span class="kw">in</span> lam_grid]</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -621,7 +621,7 @@ L(\lambda \mid Y)
 \hat{\lambda}_{\text{MLE}} = \bar{Y}.
 \]</span></p>
 <p>That feels reasonable because the mean of a Poisson distribution is <span class="math inline">\(begin:math:text\)</span>\lambda<span class="math inline">\(end:math:text\)</span>. I also verify this numerically.</p>
-<div id="ffafc02b" class="cell" data-execution_count="7">
+<div id="158ca8b7" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> neg_poisson_loglikelihood(lam_array, Y):</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    lam <span class="op">=</span> lam_array[<span class="dv">0</span>]</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> lam <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
@@ -665,7 +665,7 @@ Y_i \sim \text{Poisson}(\lambda_i),
 \]</span></p>
 <p>This is the standard Poisson regression model. The exponential link is important because <span class="math inline">\(begin:math:text\)</span>X_i'\beta<span class="math inline">\(end:math:text\)</span> can be any real number, while <span class="math inline">\(begin:math:text\)</span>\lambda_i<span class="math inline">\(end:math:text\)</span> must always be positive. Exponentiating the linear predictor guarantees that fitted patent rates remain on the positive real line.</p>
 <p>I construct a design matrix with an intercept, age, age squared, a set of regional indicators, and the customer dummy. In practice I center age before squaring it, which improves numerical stability without changing the substance of the model. I include age squared because the relationship between firm age and patenting is unlikely to be perfectly linear, and I omit one region to avoid perfect collinearity with the intercept.</p>
-<div id="1e2a634c" class="cell" data-execution_count="8">
+<div id="af31ba23" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df_model <span class="op">=</span> df.copy()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df_model[<span class="st">"age_centered"</span>] <span class="op">=</span> df_model[<span class="st">"age"</span>] <span class="op">-</span> df_model[<span class="st">"age"</span>].mean()</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df_model[<span class="st">"age_centered_sq"</span>] <span class="op">=</span> df_model[<span class="st">"age_centered"</span>] <span class="op">**</span> <span class="dv">2</span></span>
@@ -775,7 +775,7 @@ Y_i \sim \text{Poisson}(\lambda_i),
 = \sum_{i=1}^n \left(Y_i X_i'\beta - \exp(X_i'\beta) - \log(Y_i!)\right).
 \]</span></p>
 <p>I code that objective directly and maximize it numerically.</p>
-<div id="c69edfde" class="cell" data-execution_count="9">
+<div id="de3d270f" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> poisson_regression_loglikelihood(beta, Y, X):</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    eta <span class="op">=</span> X <span class="op">@</span> beta</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    eta <span class="op">=</span> np.clip(eta, <span class="op">-</span><span class="dv">20</span>, <span class="dv">20</span>)</span>
@@ -786,7 +786,7 @@ Y_i \sim \text{Poisson}(\lambda_i),
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span>poisson_regression_loglikelihood(beta, Y, X)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>I first fit the model using <code>statsmodels.GLM()</code> and then use those coefficients as stable starting values for my own numerical optimization. This makes the maximization more reliable.</p>
-<div id="7394e137" class="cell" data-execution_count="10">
+<div id="75751e13" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>glm_model <span class="op">=</span> sm.GLM(Y, X, family<span class="op">=</span>sm.families.Poisson())</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>glm_results <span class="op">=</span> glm_model.fit()</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -826,7 +826,7 @@ region_Southwest: 0.050576</code></pre>
 H(\beta) = -X' \text{diag}(\lambda_i) X.
 \]</span></p>
 <p>The covariance matrix is the negative inverse Hessian, and the standard errors are the square roots of the diagonal elements.</p>
-<div id="c065a3cb" class="cell" data-execution_count="11">
+<div id="7e5019b8" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>eta_hat <span class="op">=</span> np.clip(X <span class="op">@</span> beta_hat, <span class="op">-</span><span class="dv">20</span>, <span class="dv">20</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>lam_hat <span class="op">=</span> np.exp(eta_hat)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -931,7 +931,7 @@ H(\beta) = -X' \text{diag}(\lambda_i) X.
 </div>
 <p>The coefficient estimates from the manually coded MLE and from <code>statsmodels.GLM()</code> match exactly in this application. That is strong evidence that the likelihood function has been specified and optimized correctly. The standard errors are also extremely close. In general, small differences can appear because the Hessian is being handled numerically, but here the agreement is excellent.</p>
 <p>For reference, the built-in GLM summary is shown below.</p>
-<div id="45c51fed" class="cell" data-execution_count="12">
+<div id="62490906" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(glm_results.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 Generalized Linear Model Regression Results                  
@@ -942,7 +942,7 @@ Model Family:                 Poisson   Df Model:                            7
 Link Function:                    Log   Scale:                          1.0000
 Method:                          IRLS   Log-Likelihood:                -3258.1
 Date:                Mon, 18 May 2026   Deviance:                       2143.3
-Time:                        08:31:23   Pearson chi2:                 2.07e+03
+Time:                        08:46:58   Pearson chi2:                 2.07e+03
 No. Iterations:                     5   Pseudo R-squ. (CS):             0.1360
 Covariance Type:            nonrobust                                         
 ==============================================================================
@@ -960,7 +960,7 @@ x7             0.0506      0.047      1.072      0.284      -0.042       0.143
 </div>
 </div>
 <p>The most important coefficient is the one on <code>iscustomer</code>, which is estimated at about 0.2076. In a Poisson model, coefficients operate on the log scale, so this is not interpreted as “0.2076 more patents.” Instead, I exponentiate the coefficient to obtain the multiplicative effect on the expected patent count.</p>
-<div id="6b1d70fa" class="cell" data-execution_count="13">
+<div id="f01f1f31" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>customer_coef <span class="op">=</span> glm_results.params[<span class="dv">3</span>]</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Customer coefficient:"</span>, customer_coef)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"exp(customer coefficient):"</span>, np.exp(customer_coef))</span>
@@ -982,7 +982,7 @@ Percent effect: 23.07094134238241</code></pre>
 <li><span class="math inline">\(begin:math:text\)</span>X_1<span class="math inline">\(end:math:text\)</span>, where every firm is treated as a customer.</li>
 </ol>
 <p>All other observed characteristics, including age and region, are left unchanged. This isolates the model-implied effect of customer status while holding the rest of the covariates fixed.</p>
-<div id="d819093f" class="cell" data-execution_count="14">
+<div id="b931fdb3" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>X0_df <span class="op">=</span> X_df.copy()</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>X1_df <span class="op">=</span> X_df.copy()</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -993,7 +993,7 @@ Percent effect: 23.07094134238241</code></pre>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> X1_df.values.astype(<span class="bu">float</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>I then use the fitted Poisson regression to predict expected patent counts under each scenario.</p>
-<div id="897642c1" class="cell" data-execution_count="15">
+<div id="b6fa0794" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>yhat_0 <span class="op">=</span> np.exp(X0 <span class="op">@</span> glm_results.params)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>yhat_1 <span class="op">=</span> np.exp(X1 <span class="op">@</span> glm_results.params)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1009,7 +1009,7 @@ Average effect (customer - non-customer): 0.7927680710453278</code></pre>
 </div>
 </div>
 <p>To make this easier to read, I also summarize the two counterfactual means in a small table and chart.</p>
-<div id="121ea27c" class="cell" data-execution_count="16">
+<div id="7f8f0c9a" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>summary_df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"scenario"</span>: [<span class="st">"All firms set to non-customer"</span>, <span class="st">"All firms set to customer"</span>],</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mean_predicted_patents"</span>: [np.mean(yhat_0), np.mean(yhat_1)]</span>
