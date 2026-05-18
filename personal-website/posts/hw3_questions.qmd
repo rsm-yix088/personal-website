@@ -1,8 +1,9 @@
 ---
-title: "Poisson Regression and Maximum Likelihood Estimation"
+title: "HW3: Poisson Regression and Maximum Likelihood Estimation"
 subtitle: "A Case Study of Blueprinty's Software and Patent Awards"
 author: "Yirui Xu"
-date: today
+date: "2026-05-18"
+categories: [economics, count data]
 format: html
 execute:
   echo: true
