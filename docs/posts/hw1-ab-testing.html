@@ -263,7 +263,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="simulating-data">Simulating Data</h2>
 <p>In practice, we would not know the true values of <span class="math inline">\(\pi_A\)</span> and <span class="math inline">\(\pi_B\)</span>. In a real A/B test, those probabilities must be inferred from observed user behavior. For the purpose of this exercise, however, it is useful to set the true values ourselves so that we can study how our estimator behaves when we know the truth. I assume that <span class="math inline">\(\pi_A = 0.22\)</span> and <span class="math inline">\(\pi_B = 0.18\)</span>, so the true treatment effect is <span class="math inline">\(\theta = 0.04\)</span>.</p>
 <p>Using these parameters, I simulated 1,000 Bernoulli draws for each group. In this particular simulated sample, the observed sign-up rate was 0.202 for CTA A and 0.176 for CTA B, which gives an estimated treatment effect of <span class="math inline">\(\hat{\theta} = 0.026\)</span>. This estimate is smaller than the true value of 0.04, but that is exactly what we should expect in finite samples: random sampling variation causes the estimator to move around the truth from one sample to the next.</p>
-<div id="44d0fc78" class="cell" data-execution_count="1">
+<div id="f413136e" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -301,7 +301,7 @@ Theta hat: 0.026000000000000023</code></pre>
 <h2 class="anchored" data-anchor-id="the-law-of-large-numbers">The Law of Large Numbers</h2>
 <p>The Law of Large Numbers tells us that as the sample size grows, the sample mean converges to the population mean. In the context of this A/B test, that idea gives us confidence that our estimator, <span class="math inline">\(\hat{\theta} = \bar{X}_A - \bar{X}_B\)</span>, should get closer to the true treatment effect <span class="math inline">\(\theta\)</span> as we observe more and more data.</p>
 <p>To illustrate this, I computed the element-wise differences between the CTA A and CTA B draws and then calculated the cumulative average of those differences. The resulting plot shows how the running estimate evolves as the sample grows from 1 observation to 1,000 observations.</p>
-<div id="87839b3f" class="cell" data-execution_count="2">
+<div id="97e1c687" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>diffs <span class="op">=</span> A <span class="op">-</span> B</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>running_mean <span class="op">=</span> np.cumsum(diffs) <span class="op">/</span> np.arange(<span class="dv">1</span>, <span class="bu">len</span>(diffs) <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -332,7 +332,7 @@ Theta hat: 0.026000000000000023</code></pre>
 <p>Once we have an estimate of the treatment effect, the next question is how precise that estimate is. A point estimate alone is incomplete because it does not tell us how much uncertainty surrounds it. To communicate uncertainty, we need a standard error and, ideally, a confidence interval.</p>
 <p>The bootstrap is a resampling method that estimates the variability of a statistic without requiring a complicated closed-form derivation. The idea is simple: repeatedly resample from the observed data with replacement, recompute the statistic each time, and then use the standard deviation of those resampled statistics as an estimate of the standard error.</p>
 <p>Here, I generated 1,000 bootstrap resamples from each group and computed the treatment effect for each resample.</p>
-<div id="6f4e8a6b" class="cell" data-execution_count="3">
+<div id="28e3054e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">495</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>B_boot <span class="op">=</span> <span class="dv">1000</span></span>
@@ -377,7 +377,7 @@ Analytical SE: 0.017499142836150578
 <h2 class="anchored" data-anchor-id="the-central-limit-theorem">The Central Limit Theorem</h2>
 <p>The Central Limit Theorem states that, regardless of the shape of the underlying population distribution, the sampling distribution of the sample mean becomes approximately Normal as the sample size grows. Since our estimator <span class="math inline">\(\hat{\theta}\)</span> is a difference in sample means, the same logic applies here as well.</p>
 <p>To visualize this, I repeatedly simulated <span class="math inline">\(\hat{\theta}\)</span> 1,000 times for each of four sample sizes: <span class="math inline">\(n = 25, 50, 100,\)</span> and <span class="math inline">\(500\)</span>. For each sample size, I drew <span class="math inline">\(n\)</span> observations from each Bernoulli group, computed the difference in means, and then plotted the resulting sampling distribution.</p>
-<div id="da32b26c" class="cell" data-execution_count="4">
+<div id="d270cf3d" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sample_sizes <span class="op">=</span> [<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">500</span>]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>theta_sims <span class="op">=</span> {}</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -391,7 +391,7 @@ Analytical SE: 0.017499142836150578
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        estimates.append(A_sim.mean() <span class="op">-</span> B_sim.mean())</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    theta_sims[n] <span class="op">=</span> np.array(estimates)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="24762e8a" class="cell" data-execution_count="5">
+<div id="3a27b3ef" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax, n <span class="kw">in</span> <span class="bu">zip</span>(axes.flatten(), sample_sizes):</span>
@@ -430,7 +430,7 @@ z = \frac{\hat{\theta} - 0}{SE(\hat{\theta})}
 \]</span></p>
 <p>The logic is straightforward. First, the CLT tells us that <span class="math inline">\(\hat{\theta}\)</span> is approximately Normal for large samples. Under the null, that distribution is centered at 0. Second, dividing by the standard error converts the statistic to something approximately distributed as a standard Normal random variable. Once we know the null distribution of the test statistic, we can compute a p-value.</p>
 <p>This test is often casually called a “t-test,” but in this setting it is more accurate to think of it as a large-sample z-test. The classical t-test relies on exact Normal-theory results with estimated variance. Here the underlying data are Bernoulli, not Normal, so the exact t-distribution result does not apply. Instead, the CLT gives us an approximate Normal reference distribution, which is enough for large samples.</p>
-<div id="1bd5c6a0" class="cell" data-execution_count="6">
+<div id="f627543e" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>z_stat <span class="op">=</span> theta_hat <span class="op">/</span> analytical_se</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p_value <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> norm.cdf(<span class="bu">abs</span>(z_stat)))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -451,7 +451,7 @@ p-value: 0.13733545373416378</code></pre>
 Y_i = \beta_0 + \beta_1 D_i + \varepsilon_i
 \]</span></p>
 <p>In this setup, <span class="math inline">\(\beta_0\)</span> is the mean outcome for group B, and <span class="math inline">\(\beta_0 + \beta_1\)</span> is the mean outcome for group A. That means <span class="math inline">\(\beta_1 = \pi_A - \pi_B = \theta\)</span>. So the regression coefficient on the treatment indicator should match the difference in means estimator exactly.</p>
-<div id="d2b0e35e" class="cell" data-execution_count="7">
+<div id="d05d5731" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Y"</span>: np.concatenate([A, B]),</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"D"</span>: np.concatenate([np.ones(<span class="bu">len</span>(A)), np.zeros(<span class="bu">len</span>(B))])</span>
@@ -484,7 +484,7 @@ regression p-value: 0.13768992344072536</code></pre>
 <p>Suppose my boss is impatient and does not want to wait until all 1,000 visitors per group have been observed. Instead, she wants to check the p-value after every 100 visitors per group and stop the experiment early if any interim result is statistically significant at the 5% level. This sounds reasonable from a business perspective, but it creates a serious problem under classical frequentist statistics.</p>
 <p>The issue is that a single hypothesis test at <span class="math inline">\(\alpha = 0.05\)</span> has a 5% false positive rate under the null. But if we repeatedly test the same experiment while the data accumulate, we create multiple opportunities to generate a false positive. Even if there is truly no treatment effect, the chance of observing at least one “significant” result across many peeks can be much higher than 5%.</p>
 <p>To show this, I simulated a world in which the null hypothesis is actually true: <span class="math inline">\(\pi_A = \pi_B = 0.20\)</span>. For each simulated experiment, I generated 1,000 observations for each group, checked the p-value after every 100 observations, and recorded whether any of the ten peeks produced a significant result. I then repeated this process 10,000 times.</p>
-<div id="5ce1b9dd" class="cell" data-execution_count="8">
+<div id="b2daeccc" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">495</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>pi_A_null <span class="op">=</span> <span class="fl">0.20</span></span>

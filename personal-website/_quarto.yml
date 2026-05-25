@@ -1,6 +1,13 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: ../docs
+  render:
+    - "*.qmd"
+    - "posts/*.qmd"
+    - "!*.ipynb"
+    - "!**/*.ipynb"
+    - "!docs/**"
+    - "!broken_notebooks/**"
 
 website:
   title: "Yirui Xu"
